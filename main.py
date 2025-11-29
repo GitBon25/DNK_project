@@ -97,6 +97,9 @@ while True:
         status = hands_status[i]
         hand_label = results_hands.multi_handedness[i].classification[0].label
 
+        # --- Отображение точек и соединений рук ---
+        draw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
+
         # Средние пальцы
         if middle(status):
             if hand_label=='Left':
@@ -107,28 +110,28 @@ while True:
         # Swag
         if swag(status):
             overlay = cv2.imread("swag.jpg")
-            img = overlay_image(img, overlay, x=50, y=300)
+            img = overlay_image(img, overlay, x=50, y=100)
 
         # Указательный вверх
         if up(status):
             overlay = cv2.imread("up.jpg")
-            img = overlay_image(img, overlay, x=50, y=300)
+            img = overlay_image(img, overlay, x=50, y=100)
 
         # Палец у рта
         if mouth_box is not None and mouth(handLms, mouth_box, w, h):
             finger_near_mouth = True
             overlay = cv2.imread("mouth.jpg")
-            img = overlay_image(img, overlay, x=50, y=300)
+            img = overlay_image(img, overlay, x=50, y=100)
 
     # Две руки вместе
     if len(hands_list) == 2 and hands_together(hands_list[0], hands_list[1], w, h):
         overlay = cv2.imread("scare.jpg")
-        img = overlay_image(img, overlay, x=50, y=300)
+        img = overlay_image(img, overlay, x=50, y=100)
 
     # Средние пальцы обеих рук
     if middle_finger_left and middle_finger_right:
         overlay = cv2.imread("middle.jpg")
-        img = overlay_image(img, overlay, x=50, y=300)
+        img = overlay_image(img, overlay, x=50, y=100)
 
     cv2.imshow("Hand Gesture System", img)
     if cv2.waitKey(1) & 0xFF == 27:
